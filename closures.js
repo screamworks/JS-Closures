@@ -16,11 +16,13 @@ another variable called 'inner'. */
 
 // Code Here
 
+var inner = outer();
+
 //Once you do that, invoke inner.
 
 //Code Here
 
-
+inner();
 
 
 
@@ -48,6 +50,12 @@ in your console. */
 
   //Code Here
 
+var callJake = callFriend('Jake');
+
+callJake('435-215-9248');
+
+
+
 
 
 
@@ -65,13 +73,20 @@ in your console. */
 properly. */
 
 //Code Here
+function makeCounter(){
+  var count = 1;
+  return function(){
+    return count++;
+  }
+}
+
 
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
 
 
 
@@ -91,26 +106,28 @@ properly. */
 up/down counter. The first function is called inc, this function is responsible
 for incrementing the value once. The second function is called dec, this
 function is responsible for decrementing the value by one. You will need to use
-the module pattern to achieve this. 
-Information on the module pattern available here: 
+the module pattern to achieve this.
+Information on the module pattern available here:
 http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-example?answertab=votes#tab-top
 */
 
 function counterFactory(value) {
-
   // Code here.
-
-
   return {
+    inc: function(){
+      return ++value;
+    },
+    dec: function(){
+      return --value;
+    }
   }
-}
-
+  };
 
 counter = counterFactory(10);
-// counter.inc() // 11
-// counter.inc() // 12
-// counter.inc() // 13
-// counter.dec() // 12
+counter.inc() // 11
+counter.inc() // 12
+counter.inc() // 13
+counter.dec() // 12
 
 
 
@@ -134,12 +151,11 @@ function motivation(firstname, lastname) {
   var welcomeText = 'You\'re doing awesome, keep it up ';
 
   // code message function here.
-
-
-  //Uncommment this to return the value of your invoked message function
-  //return message();
-
-}
+     function message(){
+        return welcomeText + firstname + " " + lastname + ".";
+      }
+      return message();
+};
 
 motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
 
@@ -161,7 +177,8 @@ motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
 invokes privateMethod. Invoke this by calling module.publicMethod(); outside
 the module scope */
 
-var module = (function() {
+var module = (
+  function() {
   var person = {
     name: "phillip",
     age: 29,
@@ -172,13 +189,13 @@ var module = (function() {
     return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
   }
 
-  // Anything that is being returned is made public and can be invoked from
-  // outside our lexical scope
   return {
-    // Code here.
-  };
+    publicMethod: privateMethod
+  }}
+)();
 
-})();
+module.publicMethod();
+
 
 
 
@@ -195,12 +212,20 @@ var secondLevelFriends = ["Anne", "Harry", "Quinton"];
 var allUsers = ["Tom", "Dick", "Harry", "Anne", "Quinton", "Katie", "Mary"];
 
 function findPotentialFriends(existingFriends) {
-
+  function finder(user){
+    for (var i = 0; i < existingFriends.length; i++){
+      if(user === existingFriends[i]){
+        return false;
+      }
+      }
+      return true;
+    }
+  return finder;
 }
 
 var isNotAFriend = findPotentialFriends( friends );
-// isNotAFriend(allUsers[0]); // false
-// isNotAFriend(secondLevelFriends[2]); // true
+isNotAFriend(allUsers[0]); // false
+isNotAFriend(secondLevelFriends[2]); // true
 
 
 /******************************************************************************\
@@ -210,9 +235,10 @@ var isNotAFriend = findPotentialFriends( friends );
 method, find all potential second level friends as well as potential friends
 from allUsers. */
 
-var potentialSecondLevelFriends = "?";
-var allPotentialFriends = "?";
 
+var potentialSecondLevelFriends = secondLevelFriends.filter(isNotAFriend);
+// var allPotentialFriends = allUsers.filter();
+var allPotentialFriends = allUsers.filter(isNotAFriend);
 
 /******************************************************************************\
 	#PROBLEM-08
@@ -234,11 +260,13 @@ to 5. What we need to do is console.log(i) so that it logs like so:
  Fix the code below to log the desired output.
  */
 
-function timeOutCounter() {
-  for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-    	console.log(i)
-	}, i * 1000)
-  }
-}
-timeOutCounter();
+ function timeOutCounter() {
+   var counter = 0;
+   for (var i = 0; i <= 5; i++) {
+     setTimeout(function() {
+     	console.log(counter)
+       counter++;
+ 	}, i * 1000)
+   }
+ }
+ timeOutCounter();
